@@ -1,0 +1,18 @@
+## STAGE:1 Build Angular Application ##
+FROM node:8 as builder
+# Add a volume pointing to /angular-los-dashboard
+COPY angular-los-dashboard /angular-los-dashboard
+#Setting WORK Directory
+WORKDIR /angular-los-dashboard
+
+RUN npm install
+
+RUN $(npm bin)/ng build
+
+## STAGE:1 Build Angular Application ##
+
+FROM nginx
+
+COPY --from=builder angular-los-dashboard/dist/* /usr/share/nginx/html
+
+EXPOSE 80
